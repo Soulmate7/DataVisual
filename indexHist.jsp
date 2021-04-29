@@ -2,18 +2,6 @@
 <title>链接数据库-英文字母可视化byZR</title>
 <body>
 	<body background="image/moroccan-flower.png"></body>
-	<!-- <table width="100%" height="47" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-		  <td height="47" background="images/daohang.jpg">
-		  <center>
-		  <table width="970" border="0" align="center" cellpadding="0" cellspacing="0">
-	  <tr>
-		<td width="33%" height="32"><div align="center" class="STYLE6"><a href="indexHist.jsp" class="STYLE2">直方图</a></div></td>
-		<td width="33%" height="32"><div align="center" class="STYLE6"><a href="pie.html">饼图</a></div></td>
-		<td width="33%" height="32"><div align="center" class="STYLE6"><a href="forcePeople.html">力导向图</a></div></td>
-	
-	  </tr>
-	</table> -->
 <div id="wc"></div>
 <%@ page contentType="text/html; charset=utf-8" %> 
 <%@ page language="java" %> 
@@ -100,6 +88,7 @@
             .attr("x",w/2)
             .attr("y",50)
             .text("英语单词首字母统计");
+			
 			
 			var rect=svg.selectAll("rect")
 			            .data(dataset)
@@ -231,6 +220,7 @@
             .attr("d",0)
             .attr("fill","black")
             .transition()
+			.delay(2600)
             .duration(2000)
             .ease("linear")
             .attr("d",function(d){
@@ -245,8 +235,16 @@
                .attr("font-family","Fantasy")
                .attr("text-anchor","middle")
                .attr("x",w/2)
-               .attr("y",h-5)
-               .text("数科 201811153031 曾锐");
+               .attr("y",h-30)
+               .text("18数科 曾锐 李钰林");
+			svg2.append("text")
+            .attr("font-size","15px")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",h-5)
+            .append("svg:a")
+            .attr("xlink:href","两大外卖巨头关系图.html")
+            .text("点击进入力导向图");   
 
         </script>
 </body>
