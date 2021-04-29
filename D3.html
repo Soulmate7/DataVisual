@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3</title>
+</head>
+
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>
+
+    var w = window.innerWidth||document.documentElement.clientWidth || document.body.clientWidth;
+    var h = window.innerHeight||document.documentElement.clientHeight|| document.body.clientHeight;
+    w=w*0.98
+    h=h*0.98
+    var b = d3.rgb(70,130,180);//低
+    var a = d3.rgb(224,255,255);//高
+
+    var d = d3.rgb(255,215,0);
+    var c = d3.rgb(255,255,224);
+
+    var compute1 = d3.interpolate(a,b);
+    var compute2 = d3.interpolate(c,d);
+    var dataset1=new Array("578","337","321","281","265","1119","271","103","450","245");
+    var dataset2=new Array("150","176","152","32","54","530","174","67","262","70");
+    var dataset3=new Array("北京大学","清华大学","浙江大学","国防科技大学","北京航空大学","北京邮电大学","哈尔滨工业大学","上海交通大学","南京大学","华东师范大学");
+    var linear = d3.scale.linear()
+				.domain([0,h])
+				.range([0,1]);
+	var linear2 = d3.scale.linear()
+	            .domain([0,1400])
+	            .range([0,h])
+
+     var svg=d3.select("body")
+                .append("svg")
+                .attr("width",w)
+                .attr("height",h)
+//农小哥的logo
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",10)
+            .attr("x2",1520)
+            .attr("y2",40)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",55)
+            .attr("x2",1490)
+            .attr("y2",70)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",55)
+            .attr("x2",1520)
+            .attr("y2",40)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1520)
+            .attr("y1",25)
+            .attr("x2",1595)
+            .attr("y2",25)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1595)
+            .attr("y1",25)
+            .attr("x2",1595)
+            .attr("y2",40)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",70)
+            .attr("x2",1565)
+            .attr("y2",70)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1565)
+            .attr("y1",55)
+            .attr("x2",1595)
+            .attr("y2",85)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1595)
+            .attr("y1",40)
+            .attr("x2",1565)
+            .attr("y2",55)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1520)
+            .attr("y1",40)
+            .attr("x2",1565)
+            .attr("y2",55)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("text")
+     .attr("x",1530)
+     .attr("y",35)
+     .attr('fill', 'rgb(205,201,201')
+	 .attr('font-size', '10px')
+	 .text("18数科李钰林");
+     svg.append("text")
+     .attr("x",1495)
+     .attr("y",65)
+     .attr('fill', 'rgb(205,201,201')
+	 .attr('font-size', '10px')
+	 .text("201811153030");
+//
+
+
+     svg.append("rect")
+     .attr("x",0)
+     .attr("y",0)
+     .attr("width",100)
+     .attr("height",20)
+     .attr("fill","rgb(240,230,140)")
+
+     svg.append("text")
+     .attr("x",50)
+     .attr("y",15)
+     .attr('fill', 'black')
+	 .attr('font-size', '10px')
+	 .attr('text-anchor', 'middle')
+	 .text("推免人数");
+
+
+     svg.append("rect")
+     .attr("x",0)
+     .attr("y",30)
+     .attr("width",100)
+     .attr("height",20)
+     .attr("fill","LightSkyBlue")
+
+     svg.append("text")
+     .attr("x",50)
+     .attr("y",45)
+     .attr('fill', 'black')
+	 .attr('font-size', '10px')
+	 .attr('text-anchor', 'middle')
+	 .text("总招生人数");
+
+
+     svg.append("text")
+     .attr("x",70)
+     .attr("y",60)
+     .attr('fill', 'black')
+	 .attr('font-size', '10px')
+	 .attr('text-anchor', 'middle')
+	 .text("数据来源：各高校研究生招生网");
+
+
+     svg.append("text")
+     .attr("x",w/2)
+     .attr("y",100)
+     .attr('fill', 'black')
+	 .attr('font-size', '50px')
+	 .attr('text-anchor', 'middle')
+	 .text("2021年计算机专业前十高校研究生招生情况");
+
+
+
+
+     svg.selectAll("rect1")
+     .data(dataset1)
+     .enter()
+     .append("rect")
+     .attr("x",function(d,i){
+        return i*(w/dataset1.length);
+     })
+     .attr("y",function(d){
+        return h-linear2(d)-20;
+     })
+     .attr("width",(w/dataset1.length-10))
+     .attr("height",function(d){
+        return linear2(d)
+     })
+     .attr("fill",function(d){
+     return compute1(linear(d))
+     } )
+             .on("mouseover",function(d,i){
+            d3.select(this)
+                .attr("fill","DarkSlateGray");
+        })
+        .on("mouseout",function(d,i){
+            d3.select(this)
+                .transition()
+                .duration(500)
+                .attr("fill",function(d){
+     return compute1(linear(d))
+     } )
+     })
+
+
+
+
+     svg.selectAll("rect2")
+     .data(dataset2)
+     .enter()
+     .append("rect")
+     .attr("x",function(d,i){
+        return i*(w/dataset2.length);
+     })
+     .attr("y",function(d){
+        return h-linear2(d)-20;
+     })
+     .attr("width",(w/dataset2.length-10))
+     .attr("height",function(d){
+        return linear2(d)
+     })
+     .attr("fill",function(d){
+     return compute2(linear(d))
+     } )
+     .on("mouseover",function(d,i){
+            d3.select(this)
+                .attr("fill","Gainsboro");
+        })
+        .on("mouseout",function(d,i){
+            d3.select(this)
+                .transition()
+                .duration(500)
+                .attr("fill",function(d){
+     return compute2(linear(d))
+     } )
+})
+
+//总人数
+     svg.selectAll('text1')
+					.data(dataset1)
+					.enter()
+					.append('text')
+					.attr('fill', 'white')
+					.attr('font-size', '25px')
+					.attr('text-anchor', 'middle')
+					.attr('x', function(d,i) {
+							return i*(w/dataset1.length)+70;
+					})
+					.attr('y', function(d) {
+							return h-linear2(d);
+					})
+					.text(function(d) {
+							return d;
+					})
+//推免人数
+     svg.selectAll('text2')
+					.data(dataset2)
+					.enter()
+					.append('text')
+					.attr('fill', 'LightSlateGray')
+					.attr('font-size', '20px')
+					.attr('text-anchor', 'middle')
+					.attr('x', function(d,i) {
+							return i*(w/dataset1.length)+70;
+					})
+					.attr("y",function(d){
+                    return h-linear2(d);
+                    })
+					.text(function(d) {
+							return d;
+					})
+//地标
+     svg.selectAll('text3')
+					.data(dataset3)
+					.enter()
+					.append('text')
+					.attr('fill', 'DarkSlateGray')
+					.attr('font-size', '20px')
+					.attr('text-anchor', 'middle')
+					.attr('x', function(d,i) {
+							return i*(w/dataset2.length)+70;
+					})
+					.attr('y', function(d) {
+							return h-5;
+					})
+					.text(function(d) {
+							return d;
+					})
+
+
+
+</script>
+</body>
+</html>

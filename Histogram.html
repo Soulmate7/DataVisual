@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>JavaScript直方图</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <svg id='mysvg'>
+        </svg>
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            var svg=document.getElementById("mysvg");
+            svg.setAttribute('width',w);
+            svg.setAttribute('height',h);
+            var title=document.createElement("text");
+            svg.appendChild(title);
+            title.outerHTML="<text  x="+w/3+" y=50>历年考研报考及录取人数统计(2012-2021年)</text>"
+            var nums_sign=[1656000,1760000,1720000,1649000,1770000,2010000,2380000,2900000,3410000,3770000];
+            var nums_admit=[521300,540900,548700,570600,589800,722200,762500,916500,1114000];
+            var years=["2012","2013","2014","2015","2016","2017","2018","2019","2020","2021"];
+            var rec=new Array(10);
+            var rec2=new Array(10);
+            var txt=new Array(10);
+            var txt2=new Array(10);
+            var txt3=new Array(10);
+            for(var i=0;i<10;i++)
+            {
+                rec[i]=document.createElement("rect");
+                svg.appendChild(rec[i]);
+                txt[i]=document.createElement("text");
+                svg.appendChild(txt[i]);
+                var height=nums_sign[i]/6000;
+                rec[i].outerHTML="<rect x="+(i*w/rec.length)+" y="+(h-height)+" width="+(0.9*w/rec.length)+" height="+height+" fill='rgb(0,"+nums_sign[i]/16000+",255)'>";
+                txt[i].outerHTML="<text x="+(i*w/rec.length)+" y="+(h-height)+">"+"报考:"+nums_sign[i]+"</text>"
+
+                rec2[i]=document.createElement("rect");
+                svg.appendChild(rec2[i]);
+                txt2[i]=document.createElement("text");
+                svg.appendChild(txt2[i]);
+                height=nums_admit[i]/6000;
+                rec2[i].outerHTML="<rect x="+(i*w/rec.length)+" y="+(h-height)+" width="+(0.9*w/rec.length)+" height="+height+" fill='rgb(100,"+nums_admit[i]/8000+",255)'>";
+                txt2[i].outerHTML="<text x="+(i*w/rec.length)+" y="+(h-height)+" fill='white'>"+"录取:"+nums_admit[i]+"</text>"
+                
+                txt3[i]=document.createElement("text");
+                svg.appendChild(txt3[i]);
+                txt3[i].outerHTML="<text x="+(i*w/rec.length+30)+" y="+h+" fill='white'>"+years[i]+"</text>";
+
+            }
+        </script>
+    </body>
+</html>

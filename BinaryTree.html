@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>ZR's JavaScript</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <svg id='mysvg'>
+            <!-- <line x1="0" y1="0" x2="300" y2="300" stroke="black"/> -->
+        </svg>
+        
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            var svg=document.getElementById("mysvg");
+            svg.setAttribute('width',w);
+            svg.setAttribute('height',h);
+            var title=document.createElement("text");
+            svg.appendChild(title);
+            title.outerHTML="<text  x=0 y=50>18数科 201811153031 曾锐</text>"
+            var x0=w/2;
+            var y0=h;
+            var len=280;
+            var angle=-Math.PI/2;
+            var rate=0.9;
+            var count=10;
+            var color=126;
+            function drawTree(x0,y0,len,angle,rate,count,color){
+                var x1=x0;
+                var y1=y0;
+                var x2=x1+len*Math.cos(angle);
+                var y2=y1+len*Math.sin(angle);
+                var aL=angle-Math.PI/4*(0.5+Math.random()/2);
+                var aR=angle+Math.PI/4*(0.5+Math.random()/2);
+                var len=len*rate*(0.5+Math.random()/2);
+                var line=document.createElement("line");
+                color=color+9;
+                svg.appendChild(line);
+                line.outerHTML="<line x1="+x1+" y1="+y1+" x2="+x2+" y2="+y2+" stroke=rgb(98,"+(color)+",29) stroke-width="+count+" />"
+                if(count>0)
+                {
+                    drawTree(x2,y2,len,aL,rate,count-1,color);
+                    drawTree(x2,y2,len,aR,rate,count-1,color);
+                }
+            }
+            drawTree(x0,y0,len,angle,rate,count,color);
+        </script>
+    </body>
+</html>

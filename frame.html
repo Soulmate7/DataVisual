@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>frame</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <script src="d3.v3.min.js" charset="utf-8"></script>
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            w=w*0.98;
+            h=h*0.9;
+            var svg=d3.select("body")
+                      .append("svg")
+                      .attr("width",w)
+                      .attr("height",h);
+            svg.append("text")
+               .attr("font-size","20px")
+               .attr("fill","rgb(124,84,57)")
+               .attr("font-family","Fantasy")
+               .attr("text-anchor","middle")
+               .attr("x",w/2)
+               .attr("y",h-25)
+               .text("数科 201811153031 曾锐");
+     
+        </script>
+    </body>
+</html>

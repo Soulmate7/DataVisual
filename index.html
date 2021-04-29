@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>wordtree</title>
+</head>
+<body>
+
+<svg id="mysvg" width=800 height=600>
+  <line x1=1390 y1=10 x2=1420 y2=40 stroke='rgb(255 215 0)' stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1390 y1=55 x2=1390 y2=70 stroke='rgb(108 166 205)'stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1390 y1=55 x2=1420 y2=40 stroke='rgb(255 215 0)'stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1420 y1=25 x2=1495 y2=25 stroke='rgb(108 166 205)'stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1495 y1=25 x2=1495 y2=40 stroke='rgb(108 166 205)'stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1390 y1=70 x2=1465 y2=70 stroke='rgb(108 166 205)'stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1465 y1=55 x2=1495 y2=85 stroke='rgb(255 215 0)'stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1495 y1=40 x2=1465 y2=55 stroke='rgb(255 215 0)'stroke-width=4 stroke-opacity=0.5></line>
+  <line x1=1420 y1=40 x2=1465 y2=55 stroke='rgb(255 215 0)'stroke-width=4 stroke-opacity=0.5></line>
+  <text x="1430" y="35" fill="rgb(205 201 201)" style="font-size:10px;">18数科李钰林</text>
+  <text x="1395" y="65" fill="rgb(205 201 201)" style="font-size:10px;">201811153030</text>
+</svg>
+<script>
+ var w = window.innerWidth||document.documentElement.clientWidth || document.body.clientWidth;
+ var h = window.innerHeight||document.documentElement.clientHeight|| document.body.clientHeight;
+ w=w*0.98
+ h=h*0.98 
+
+ 
+ var fontsize=400;
+ var rate=0.9;
+ var count=8;
+ var a=-Math.PI/2;
+ var x0=w/2;
+ var str="拜仁欧冠卫冕成功";
+ var L=str.length*fontsize;
+ var y0=h;
+ var svg=document.getElementById("mysvg")
+ svg.setAttribute("width",w);
+ svg.setAttribute("height",h); 
+  
+ function show(x0,y0,L,rate,a,count){
+   var fontsize=count*3;
+   var L=str.length*fontsize;
+   var x1=x0;
+   var y1=y0;
+   var x2=x1+L*rate*Math.cos(a);
+   var y2=y1+L*rate*Math.sin(a);
+   
+   var aL=a-Math.PI/5*(0.5+0.5*Math.random());
+   var aR=a+Math.PI/5*(0.5+0.5*Math.random());
+   
+ //var lineX=document.createElement("line");
+ //svg.appendChild(lineX);
+ //lineX.outerHTML="<line x1="+x1+" y1="+y1+" x2="+x2+" y2="+y2+" stroke='green'/>";
+   var words=document.createElement("text");
+   svg.appendChild(words);
+   words.outerHTML="<text x="+x1+" y="+y1+" transform='rotate("+a*180/Math.PI+","+x1+","+y1+")' fill='rgb("+count*40+",205,128)' font-size="+fontsize+">"+str+"</text>";
+   if(count>0){
+     show(x2,y2,L,rate,aL,count-1);
+     show(x2,y2,L,rate,aR,count-1);
+     if(count==1){
+       var num=0.5+0.5*Math.random();
+       var flowers1=document.createElement("ciecle");
+       svg.appendChild(flowers1);
+       flowers1.outerHTML="<circle cx="+x2+" cy="+y2+" r="+10*num+" fill='rgb("+255*num+" 70 70 )' />"
+       var flowers2=document.createElement("ciecle");
+       svg.appendChild(flowers2);
+       flowers2.outerHTML="<circle cx="+x2+" cy="+y2+" r=2 fill='rgb("+255*num+" "+255*num+" 0 )'/>"
+     
+     }
+   }
+ }
+  show(x0,y0,L,rate,a,count);
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <title>ZR's JavaScript</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <svg id='mysvg'>
+        </svg>
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            var svg=document.getElementById("mysvg");
+            svg.setAttribute('width',w);
+            svg.setAttribute('height',h);
+            var title=document.createElement("text");
+            svg.appendChild(title);
+            title.outerHTML="<text  x="+(w-250)+" y=50 font-size=20 style='fill:rgb(124,84,57)' font-family='Fantasy'>数科 201811153031 曾锐</text>"
+            var line1=document.createElement("line");
+            var line2=document.createElement("line");
+            var line3=document.createElement("line");
+            var line4=document.createElement("line");
+            svg.appendChild(line1);
+            svg.appendChild(line2);
+            svg.appendChild(line3);
+            svg.appendChild(line4);
+            line1.outerHTML="<line x1="+(w-265)+" y1=20 x2="+(w-40)+" y2=20 stroke=rgb(124,84,57) />"
+            line2.outerHTML="<line x1="+(w-265)+" y1=70 x2="+(w-40)+" y2=70 stroke=rgb(124,84,57) />"
+            line3.outerHTML="<line x1="+(w-265)+" y1=20 x2="+(w-265)+" y2=70 stroke=rgb(124,84,57) />"
+            line4.outerHTML="<line x1="+(w-40)+" y1=20 x2="+(w-40)+" y2=70 stroke=rgb(124,84,57) />"
+            var str="克罗斯再来找本泽马";
+            var x0=w/2;
+            var y0=h;
+            var len=280
+            var angle=-Math.PI/2;
+            var count=7;
+            function drawTree(x0,y0,len,angle,count){
+                var fontsize=count*2.5;
+                var len=str.length*fontsize;
+                var x1=x0;
+                var y1=y0;
+                var x2=x1+len*Math.cos(angle);
+                var y2=y1+len*Math.sin(angle);
+                var aL=angle-Math.PI/4*(0.5+Math.random()/2);
+                var aR=angle+Math.PI/4*(0.5+Math.random()/2);
+                
+                var words=document.createElement("text");
+                svg.appendChild(words);
+                words.outerHTML="<text x="+x1+" y="+y1+" transform='rotate("+angle*180/Math.PI+","+x1+","+y1+")' style='fill:rgb(0,"+255*(1-(count/7))+",0)' font-size="+fontsize+">"+str+"</text>"
+                if(count>0)
+                {
+                    drawTree(x2,y2,len,aL,count-1);
+                    drawTree(x2,y2,len,aR,count-1);
+                    if(count==1)
+                    {
+                        
+                        var flower=document.createElement("circle");
+                        svg.appendChild(flower);
+                        var rad=7*Math.random();
+                        flower.outerHTML="<circle cx="+x2+" cy="+y2+" r="+rad+" fill='yellow' />"
+                        var spot=document.createElement("circle");
+                        svg.appendChild(spot);
+                        spot.outerHTML="<circle cx="+x2+" cy="+y2+" r=1 fill='black' />"
+
+                        var flower1=document.createElement("circle");
+                        svg.appendChild(flower1);
+                        flower1.outerHTML="<circle cx="+(x2+rad)+" cy="+y2+" r="+rad*0.5+" fill='pink' />"
+                        
+                        var flower2=document.createElement("circle");
+                        svg.appendChild(flower2);
+                        flower2.outerHTML="<circle cx="+(x2-rad)+" cy="+y2+" r="+rad*0.5+" fill='pink' />"
+
+                        var flower3=document.createElement("circle");
+                        svg.appendChild(flower3);
+                        flower3.outerHTML="<circle cx="+x2+" cy="+(y2+rad)+" r="+rad*0.5+" fill='pink' />"
+
+                        var flower4=document.createElement("circle");
+                        svg.appendChild(flower4);
+                        flower4.outerHTML="<circle cx="+x2+" cy="+(y2-rad)+" r="+rad*0.5+" fill='pink' />"
+                    }
+                }
+            }
+            drawTree(x0,y0,len,angle,count);
+            drawTree(x0,y0,len,-Math.PI/2.3,count);
+            drawTree(x0,y0,len,-Math.PI/1.7,count);
+        </script>
+    </body>
+</html>

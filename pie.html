@@ -1,0 +1,292 @@
+<html>
+    <head>
+        <title>ZR's Pie</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <script src="d3.v3.min.js"></script>
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            w=w*0.98;
+            h=h*0.9; 
+            var svg=d3.select("body")
+            .append("svg")
+            .attr("width",w)
+            .attr("height",h);  
+            svg.append("text")
+            .attr("font-size","20px")
+            .attr("fill","rgb(124,84,57)")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",h-25)
+            .text("数科 201811153031 曾锐"); 
+            svg.append("text")
+            .attr("font-size","15px")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",h-5)
+            .append("svg:a")
+            .attr("xlink:href","直方图+饼图组图.html")
+            .text("点击进入李钰林的作品");
+            svg.append("text")
+            .attr("font-size","24px")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",30)
+            .text("中国传媒大学2020届本科毕业生毕业去向");
+            svg.append("text")
+            .attr("font-size","15px")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",55)
+            .text("数据来源:中传2020届毕业生就业质量报告");  
+            
+            //饼图
+            var dataset=[["签约工作率",18.42],["深造率",34.21],["其他录用形式就业率",10.53],["自由职业率",21.05],["待就业率",10.53],["暂不就业率",5.26]];
+            var pie =d3.layout.pie()
+            .value(function(d){return d[1];});
+            var piedata=pie(dataset);
+            var arc=d3.svg.arc()
+            .innerRadius(100)
+            .outerRadius(function(d){
+                return d.value*5+150;
+            });
+            var color=d3.scale.category20();
+
+            svg.selectAll("path")
+            .data(piedata)
+            .enter()
+            .append("path")
+            .attr("stroke","blue")
+            .attr("transform","translate("+w/1.3+","+h/2+")")
+            .on("mouseover",function(d,i){
+                d3.select(this)
+                .attr("fill",d3.rgb(color(i)).brighter());
+                svg.append("text")
+                .attr("id","info")
+                .attr("x",w/1.3)
+                .attr("y",h/2-15)
+                .attr("font-size",30)
+                .attr("text-anchor","middle")
+                .text(d.data[0]);
+                svg.append("text")
+                .attr("id","value")
+                .attr("x",w/1.3)
+                .attr("y",h/2+15)
+                .attr("font-size",30)
+                .attr("text-anchor","middle")
+                .text(d.value+"%")
+            })
+            .on("mouseout",function(d,i){
+                d3.select(this)
+                .transition()
+                .duration(500)
+                .ease("linear")
+                .attr("fill",color(i));
+                d3.select("#info")
+                .remove();
+                d3.select("#value")
+                .remove();
+            })
+            .attr("d",0)
+            .attr("fill","black")
+            .transition()
+            .duration(700)
+            .ease("linear")
+            .attr("d",function(d){
+                return arc(d)
+            })
+            .attr("fill",function(d,i){
+                return color(i);
+            });
+            svg.selectAll("rec")
+            .data(piedata)
+            .enter()
+            .append("rect")
+            .attr("transform",function(d,i){
+                    return "translate("+(w/1.8-20)+","+(138+25*i)+")";
+            })
+            .attr("height",15)
+            .attr("width",15)
+            .attr("fill",function(d,i){
+                return color(i);
+            });
+            svg.selectAll("name")
+            .data(piedata)
+            .enter()
+            .append("text")
+            .attr("transform",function(d,i){
+                    return "translate("+(w/1.8)+","+(150+25*i)+")";
+            })
+            .text(function(d){
+                return ":"+d.data[0]})
+            svg.selectAll("data")
+            .data(piedata)
+            .enter()
+            .append("text")
+            .attr("fill","blue")
+            .attr("text-anchor","middle")
+            .attr("font-size",function(d){
+                return d.value*1.2+"px";
+            })
+            .attr("transform",function(d){
+                    var x=arc.centroid(d)[0];
+                    var y=arc.centroid(d)[1];
+                    return "translate("+(w/1.3+x)+","+(h/2+y)+")";
+            })
+            .text(function(d){
+                return d.value+"%"})
+            svg.append("text")
+            .attr("font-size","18px")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/1.3)
+            .attr("y",h-100)
+            .text("中国传媒大学2020届本科毕业生");
+            svg.append("text")
+            .attr("font-size","18px")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/1.3)
+            .attr("y",h-70)
+            .text("计算机科学与技术专业（大数据方向）毕业去向");
+
+            //直方图1
+            var cities=["北京","上海","深圳","杭州","广州"];
+            var data1=[948,75,64,54,47];
+            svg.append("text")
+            .attr("font-size","17px")
+            .attr("x",70)
+            .attr("y",130)
+            .attr("fill","rgb(44,83,135")
+            .text("👨🏻‍🎓毕业生单位录用就业城市TOP5");
+            svg.selectAll("cities")
+            .data(cities)
+            .enter()
+            .append("text")
+            .attr("font-size","15px")
+            .attr("fill","steelblue")
+            .attr("x",80)
+            .attr("y",function(d,i){
+                return 170+i*50;
+            })
+            .text(function(d){
+              return d;
+            });
+            strs=["👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻","👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻","👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻","👨🏻‍💻👨🏻‍💻👨🏻‍💻","👨🏻‍💻👨🏻‍💻👨🏻‍💻"];
+            svg.append("line")
+            .attr("x1",130)
+            .attr("y1",150)
+            .attr("x2",130)
+            .attr("y2",400)
+            .attr("stroke", "steelblue");
+            svg.selectAll("str")
+            .data(data1)
+            .enter()
+            .append("text")
+            .attr("x",135)
+            .attr("y",function(d,i){
+                return 170+i*50;
+            })
+            .on("mouseover",function(d,i){
+                svg.append("text")
+                .attr("id","people")
+                .attr("x",function(){
+                    if(i!=0)
+                        return 140+data1[i];
+                    else  return 600;
+                })
+                .attr("y",170+i*50)
+                .attr("fill","steelblue")
+                .text(data1[i])
+            })
+            .on("mouseout",function(d,i){
+                d3.select("#people")
+                .remove();
+            })
+            .text(function(d,i){
+                return strs[i];
+            });
+
+            //直方图2
+            companies=["腾讯","字节跳动","京东","网易","百度","华为","苏宁","小米","新浪","阿里巴巴"]
+            data2=[84,54,37,35,25,24,17,16,14,11];
+            svg.append("text")
+            .attr("font-size","15px")
+            .attr("x",70)
+            .attr("y",h/2+50)
+            .attr("fill","green")
+            .text("💴接收中国传媒大学近三年毕业生人数前 10 位的互联网百强企业");
+            svg.selectAll("company")
+            .data(companies)
+            .enter()
+            .append("text")
+            .attr("font-size","12px")
+            .attr("text-anchor","middle")
+            .attr("x",function(d,i){
+                return 90+i*50;
+            })
+            .attr("y",h-120)
+            .text(function(d){
+                return d;
+            });
+            svg.append("line")
+            .attr("x1",60)
+            .attr("y1",h-140)
+            .attr("x2",580)
+            .attr("y2",h-140)
+            .attr("stroke", "steelblue");
+            svg.selectAll("data2")
+            .data(data2)
+            .enter()
+            .append("rect")
+            .attr("x",function(d,i){
+                return 70+i*50;
+            })
+            .attr("y",function(d){
+                return h-d*2-140;
+            })
+            .attr("fill",function(d,i)
+            {
+                var c=240-data2[i];
+                return "rgb(127,255,"+c+")";
+            })
+            .on("mouseover",function(d,i){
+                d3.select(this)
+                .attr("fill","green");
+                svg.append("text")
+                .attr("id","num")
+                .attr("x",90+i*50)
+                .attr("y",h-data2[i]*2-140)
+                .attr("text-anchor","middle")
+                .attr("font-size","12px")
+                .attr("fill","green")
+                .text(data2[i]);
+            })
+            .on("mouseout",function(d,i){
+                d3.select(this)
+                .transition()
+                .duration(500)
+                .ease("linear")
+                .attr("fill",function(){
+                    var c=240-data2[i];
+                    return "rgb(127,255,"+c+")";
+                })
+                d3.select("#num")
+                .remove();
+            })
+            .attr("width",40)
+            .attr("height",0)
+            .transition()
+            .duration(1000)
+            .ease("bounce")
+            .attr("height",function(d){
+                return d*2;
+            });
+        </script>
+    </body>
+</html>
