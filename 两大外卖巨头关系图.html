@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+	<title>
+		两大外卖巨头关系图
+	</title>
+		 <style>
+			path{
+			  fill: none;
+			  stroke: #666;
+			  stroke-width: 1.5px;
+			}
+			circle {
+			  stroke: #333;
+			  stroke-width: 1.5px;
+			}
+			text {
+			  font: 10px sans-serif;
+			  pointer-events: none;
+			}
+			.tooltip{
+				position: absolute;
+				width: 240px;
+				height: auto;
+				font-family: simsun;
+				font-size: 10px;
+				text-align: left;
+				color: black;
+				border-width: 1px solid black;
+				background-color: 7FFF00;
+				border-radius: 3px;
+			}
+			.tooltip:after{
+				content: '';
+				position: absolute;
+				bottom: 100%;
+				left: 20%;
+				margin-left: -3px;
+				width: 0;
+				height: 0;
+				border-bottom: 12px solid black;
+				border-right: 12px solid transparent;
+				border-left: 12px solid transparent;
+			}
+	</style>
+  </head>
+  <body style=" opacity:1">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8" ></script>
+	<script type="text/javascript">
+		var  width=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)*0.98;
+		var  height=(window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight)*0.9;
+		var  img_h=50;
+		var  img_w=50;
+		var  radius=10;
+
+	    var x = d3.scale.linear()
+				  .domain([1, 30])
+                  .range([20, 50]);
+		var svg=d3.select("body")
+                .append("svg")
+                .attr("width",width)
+                .attr("height",height);
+		var nodes=[{name:"美团",image:"mt.jpg",intro:"中国第三大互联网公司、中国第三大互联网上市公司、中国领先的生活服务电子商务平台、港股三大市值公司、中国第四大互联网公司、第三大互联网公司"},
+				{name:"饿了么",image:"elm.jpg",intro:"阿里新零售战略的一支重要力量、支撑各种新零售场景的物流基础设施、中国餐饮业数字化领跑者、行业第一、中国专业的餐饮O2O平台"},
+				{name:"王兴",image:"mt.jpg",intro:"理想汽车第一大股东、理想汽车的第二大股东、美团的创始人、理想汽车的第一大股东、理想汽车第二大股东、中国第20大富豪"},
+				{name:"外卖",image:"mt.jpg",intro:"第三种常规就餐方式、21世纪最伟大的发明、生活中不可或缺的一部分、夜间餐饮消费的重要方式、餐饮行业的基础设施"},
+				{name:"腾讯",image:"mt.jpg",intro:"互联网巨头、亚洲市值最高的公司、全球最大的游戏公司、京东第一大股东、中国服务用户最多的互联网企业之一"},
+				{name:"优选事业部",image:"mt.jpg",intro:"美团成立优选事业部"},
+	            {name:"王慧文",image:"mt.jpg",intro:"美团仅次于王兴的二号人物、餐饮平台总裁"},
+				{name:"300亿美元",image:"mt.jpg",intro:""},
+				{name:"17亿元",image:"mt.jpg",intro:"赵东来是汉东省京州市公安局局长。看似直来直去，但却深谋远虑，智勇双全。为了保护正义的尊严，报着坚决整治恶势力的决心，在与检察部门的合作中从最初的质疑到之后的通力配合，展现出现代执法机构的反腐决心。"},
+				{name:"15亿元",image:"mt.jpg",intro:"陈岩石是离休干部、汉东省检察院前常务副检察长。充满正义，平凡而普通的共产党人。对大老虎赵立春，以各种形式执着举报了十二年。在这场关系党和国家生死存亡的斗争中，老人家以耄耋高龄，义无反顾"},
+				{name:"吃",image:"mt.jpg",intro:"李达康是汉东省省委常委，京州市市委书记，是一个正义无私的好官。但为人过于爱惜自己的羽毛，对待身边的亲人和朋友显得过于无情"},
+				{name:"穆荣均",image:"mt.jpg",intro:"沙瑞金是汉东省省委书记。刚至汉东便发生丁义珍出逃美国事件，又遇到大风厂案。深知汉东政治情况的沙瑞金支持侯亮平查案，要求他上不封顶。"},
+				{name:"美团配送",image:"mt.jpg",intro:"欧阳菁是汉东省京州市城市银行副行长，京州市市委书记李达康的妻子，后因感情不和离婚。她曾利用职务的便利贪赃枉法。"},
+				{name:"1529亿元",image:"mt.jpg",intro:"丁义珍英文名汤姆丁。汉东省京州市副市长兼光明区区委书记。贪污腐败，逃往国外。"},
+				{name:"69港元",image:"mt.jpg",intro:"季昌明是汉东省省级检察院检察长。清廉负责，为人正直，性格温和，但也有些拘泥于教条。对初到汉东省的侯亮平提供了极大地帮助，为破解案件起到了极大地作用。"},
+				{name:"美团优选",image:"mt.jpg",intro:"钟小艾是侯亮平的妻子，中纪委调查组的委派员。"},
+				{name:"香港",image:"mt.jpg",intro:"赵瑞龙是副国级人物赵立春的公子哥，官二代，打着老子的旗子，黑白两道通吃，权倾一时。把汉东省搅得天翻地覆。"},
+
+
+			    {name:"王磊",image:"elm.jpg",intro:"祈同伟是汉东省公安厅厅长。出身农民，曾想凭自己的努力走上去，内心渴望成为一个胜天半子的人，但现实却沉重地打击了他，进而走上了不归路"},
+				{name:"张旭豪",image:"elm.jpg",intro:"陈海是汉东省人民检察院反贪局局长。他不畏强权、裁决果断，一出场就与汉东官场权利正面交锋；他廉明正直、重情重义，与好兄弟侯亮平携手战斗在反腐第一线，他遭遇暗害惨出车祸而躺在医院。"},
+				{name:"2.6亿",image:"elm.jpg",intro:"蔡成功是汉东省大风厂董事长、法人代表，为人狡诈，为了招标成功而贿赂政府官员，甚至连发小反贪局局长侯亮平也企图想去贿赂。"},
+				{name:"蜂鸟配送",image:"elm.jpg",intro:"高小琴是山水集团董事长，也是一位叱咤于政界和商界的风云人物，处事圆滑、精明干练。在与官员沟通时更是辩口利辞，沉稳大气，拥有高智商和高情商，并得到以“猴精”著称的反贪局长侯亮平冠以“美女蛇”的称号。"},
+	            {name:"康嘉",image:"elm.jpg",intro:"高小凤是高小琴的孪生妹妹，高育良的情妇。"},
+				{name:"43.9%",image:"elm.jpg",intro:"陆亦可是汉东省检察院反贪局的女检查官，表面冷峻决绝，内心重情重义。大龄未嫁的她面临着家庭逼婚的困境，而她抗婚是因为对反贪局长陈海一往情深。然而陈海惨遭横祸，她收起悲愤去探求真相拨云见雾，同时在公安局长赵东来的追求中获得真爱。"},
+				{name:"王一博",image:"elm.jpg",intro:"赵东来是汉东省京州市公安局局长。看似直来直去，但却深谋远虑，智勇双全。为了保护正义的尊严，报着坚决整治恶势力的决心，在与检察部门的合作中从最初的质疑到之后的通力配合，展现出现代执法机构的反腐决心。"},
+				{name:"阿里",image:"elm.jpg",intro:"陈岩石是离休干部、汉东省检察院前常务副检察长。充满正义，平凡而普通的共产党人。对大老虎赵立春，以各种形式执着举报了十二年。在这场关系党和国家生死存亡的斗争中，老人家以耄耋高龄，义无反顾"},
+				{name:"百度外卖",image:"elm.jpg",intro:"李达康是汉东省省委常委，京州市市委书记，是一个正义无私的好官。但为人过于爱惜自己的羽毛，对待身边的亲人和朋友显得过于无情"},
+				{name:"超过15000",image:"elm.jpg",intro:"沙瑞金是汉东省省委书记。刚至汉东便发生丁义珍出逃美国事件，又遇到大风厂案。深知汉东政治情况的沙瑞金支持侯亮平查案，要求他上不封顶。"},
+				{name:"2500万美元",image:"elm.jpg",intro:"欧阳菁是汉东省京州市城市银行副行长，京州市市委书记李达康的妻子，后因感情不和离婚。她曾利用职务的便利贪赃枉法。"}];
+
+		var edges=[{source:0,target:1,relation:"对手"},{source:1,target:0,relation:"对手"},{source:0,target:2,relation:"创始人"},{source:0,target:3,relation:"业务"},
+	           {source:0,target:4,relation:"股东"},{source:0,target:5,relation:"成立"}, {source:0,target:6,relation:"高级副总裁"},
+			   {source:0,target:7,relation:"估值"},{source:0,target:8,relation:"经营亏损"},{source:0,target:9,relation:"净利润"},
+			   {source:0,target:10,relation:"核心"},{source:0,target:11,relation:"联合创始人"},{source:0,target:12,relation:"品牌名"},
+			   {source:0,target:13,relation:"总交易金额"},{source:0,target:14,relation:"发行价"},{source:0,target:15,relation:"社区团购业务"},
+			   {source:0,target:16,relation:"上市"},
+			   {source:1,target:17,relation:"CEO"},{source:1,target:18,relation:"创始人"},
+			   {source:1,target:19,relation:"用户量"},{source:1,target:20,relation:"品牌名"},
+			   {source:1,target:21,relation:"联合创始人"},{source:1,target:22,relation:"市场份额"},
+			   {source:1,target:23,relation:"代言人"},{source:1,target:24,relation:"股东"},
+			   {source:1,target:25,relation:"全资子公司"},{source:1,target:26,relation:"员工"},
+			   {source:1,target:27,relation:"C轮融资"}]
+		var force=d3.layout.force()
+                .nodes(nodes)
+				.links(edges)
+				.size([width,height])
+				.linkDistance(200)
+				.charge(-2000)
+                .start();
+        //提示框部分
+		var tooltip=d3.selectAll("body")
+                    .append("div")
+                    .attr("class","tooltip")
+                    .style("opacity",0.0)
+                    .style("fill","white");
+
+       //箭头绘制
+		var defs = svg.append("defs");
+		var radius=10;
+		var arrowMarker = defs.append("marker")
+								.attr("id","arrow")
+								.attr("markerUnits","strokeWidth")
+								.attr("markerWidth","4")
+								.attr("markerHeight","4")
+								.attr("viewBox","0 0 4 4")
+								.attr("refX",20+radius/8-2)   //实际是radius/strokeWidth
+								.attr("refY",2)
+								.attr("orient","auto");
+
+		var arrow_path = "M0,1 L4,2 L0,3 L0,0";
+
+		arrowMarker.append("path")
+					.attr("d",arrow_path);
+		var color=d3.scale.category20();
+		var path = svg.selectAll("path")
+								  .data(edges)
+								  .enter()
+								  .append("path")
+								  .attr("id", function(d,i) {
+									   return "edgepath" +i;
+								  })
+								  .attr("class","edges")
+								  .attr("marker-end","url(#arrow)");
+		var pathtext = svg.selectAll('.pathText')
+				  .data(edges)
+				  .enter()
+				  .append("text")
+				  .attr("class","pathText")
+				  .append('textPath')
+				  .attr("text-anchor", "middle")//居中
+				  .attr("startOffset","50%")
+				  .attr('xlink:href', function(d,i) { return "#edgepath" + i; })
+				  .text(function(d) { return d.relation; });
+		var  img_h=50;
+		var  img_w=50;
+		var  radius=23;
+		var  circles=svg.selectAll("forceCircle")
+	               .data(nodes)
+				   .enter()
+				   .append("circle")
+				   .attr("class","forceCircle")
+				   .attr("r",function(d){
+				   		return x(d.weight)
+				   		})
+				   .style("stroke","DarkGray")
+				   .style("stroke-width","1.0px")
+				   .attr("fill", function(d, i){
+                                    //创建圆形图片
+                                    var defs = svg.append("defs").attr("id", "imgdefs");
+                                    var catpattern = defs.append("pattern")
+                                                         .attr("id", "catpattern" + i)
+                                                         .attr("height", 1)
+                                                         .attr("width", 1);
+                                    catpattern.append("image")
+                                            .attr("x", - (img_w / 2 - radius))
+                                            .attr("y", - (img_h / 2 - radius))
+                                            .attr("width", img_w)
+                                            .attr("height", img_h)
+                                            .attr("xlink:href","image/"+d.image);
+                                    return "url(#catpattern" + i + ")";
+                    })
+					.on("mouseover",function(d,i){    //加入提示框
+                        tooltip.html("简介："+d.intro)
+                               .style("left",(d3.event.pageX)+"px")
+                               .style("top",(d3.event.pageY+20)+"px")
+                               .style("opacity",2);
+					})
+					.on("mousemove",function(d){
+                          tooltip.style("left",(d3.event.pageX)+"px")
+                                 .style("top",(d3.event.pageY+20)+"px"); })
+                   .on("mouseout",function(d){
+                        tooltip.style("opacity",0.0); })
+				   .call(force.drag);
+	    var texts=svg.selectAll(".forceText")
+                 .data(nodes)
+				 .enter()
+				 .append("text")
+				 .attr("class","forceText")
+				 .attr("x",function(d){return d.x;})
+				 .attr("y",function(d){return d.y;})
+				 .style("stroke", "#336666")
+                 .attr("dx","-1.5em")
+				 .attr("dy","3em")
+				 .text(function(d){return d.name;});
+
+		force.on("tick",function(){
+		      path.attr("d", function(d) {
+					var dx = d.target.x - d.source.x;//增量
+					var	dy = d.target.y - d.source.y;
+					return "M" + d.source.x + ","+ d.source.y + "L" + d.target.x + "," + d.target.y;
+				  });
+			  circles.attr("cx",function(d){return d.x;});
+			  circles.attr("cy",function(d){return d.y;});
+			  texts.attr("x",function(d){return d.x;});
+			  texts.attr("y",function(d){return d.y;});
+		});
+
+
+//农小哥的logo
+
+     svg.append("text")
+     .attr("x",w/4*3)
+     .attr("y",800)
+     .attr('fill', 'grey')
+	 .attr('font-size', '15px')
+	 .attr('text-anchor', 'middle')
+	 .text("中国传媒大学计算机与网络空间安全学院2020届硕士毕业去向落实情况");
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",810)
+            .attr("x2",1520)
+            .attr("y2",840)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",855)
+            .attr("x2",1490)
+            .attr("y2",870)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",855)
+            .attr("x2",1520)
+            .attr("y2",840)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1520)
+            .attr("y1",825)
+            .attr("x2",1595)
+            .attr("y2",825)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1595)
+            .attr("y1",825)
+            .attr("x2",1595)
+            .attr("y2",840)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1490)
+            .attr("y1",870)
+            .attr("x2",1565)
+            .attr("y2",870)
+            .attr("stroke", "rgb(240,230,140)")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1565)
+            .attr("y1",855)
+            .attr("x2",1595)
+            .attr("y2",885)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1595)
+            .attr("y1",840)
+            .attr("x2",1565)
+            .attr("y2",855)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("line")
+            .attr("x1",1520)
+            .attr("y1",840)
+            .attr("x2",1565)
+            .attr("y2",855)
+            .attr("stroke", "LightSkyBlue")
+            .attr("stroke-width", 4);
+     svg.append("text")
+     .attr("x",1530)
+     .attr("y",835)
+     .attr('fill', 'rgb(205,201,201')
+	 .attr('font-size', '10px')
+	 .text("18数科李钰林");
+     svg.append("text")
+     .attr("x",1495)
+     .attr("y",865)
+     .attr('fill', 'rgb(205,201,201')
+	 .attr('font-size', '10px')
+	 .text("201811153030");
+
+
+</script>
+</body>
+</html>
