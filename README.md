@@ -522,6 +522,9 @@ connection.close();                          //断开链接
 
 ---
 ## 力导向图 
+
+- code
+
 ``` javascript
 <html>
     <head>
@@ -687,6 +690,11 @@ connection.close();                          //断开链接
     </body>
 </html>
 ```
+- 效果展示
+
+![force](image/force.png)
+
+[点击查看](http://47.93.252.206:8080/div2021/forcePeople.html)
 
 
 ---
@@ -703,6 +711,109 @@ connection.close();                          //断开链接
 D3.JS词云图实现了JavaScript的Wordle算法。Wordle基于空间四叉树去除重叠。
 **加载的JavaScript库**：[d3.layout.cloud.js](https://github.com/jasondavies/d3-cloud)
 
+- code
+
+``` javascript
+<html>
+    <head>
+        <title>2020中国考研院校人气四十强排行</title>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+        <body background="image/moroccan-flower.png"></body>
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="d3.layout.cloud.js"></script>
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            w=w*0.98;
+            h=h*0.9;
+		 var fill = d3.scale.category20();
+		 var words=[{text:"南京师范大学",size:50.51740},{text:"苏州大学",size:48.23926},{text:"华东师范大学",size:46.03547},{text:"武汉大学",size:40.64378},
+{text:"东华大学",size:39.96762},{text:"南京大学",size:38.87550},{text:"南开大学",size:36.49173},{text:"厦门大学",size:36.24342},
+{text:"华中科技大学",size:35.45926},{text:"中南大学",size:34.77292},{text:"北京大学",size:34.25036},{text:"上海大学",size:34.19091},
+      {text:"清华大学",size:33.52113},{text:"四川大学",size:33.05628},{text:"郑州大学",size:31.93532},{text:"华中师范大学",size:30.57024},
+      {text:"华南师范大学",size:29.92051},{text:"湖南师范大学",size:29.69627},{text:"西安交通大学",size:29.57067},{text:"天津大学",size:28.48719},
+      {text:"陕西师范大学",size:27.80969},{text:"北京师范大学",size:27.67637},{text:"重庆大学",size:26.22049},{text:"西北大学",size:24.88220},
+      {text:"武汉理工大学",size:24.87279},{text:"浙江大学",size:24.77883},{text:"中国农业大学",size:24.77855},{text:"中国人民大学",size:24.30072},
+      {text:"华南理工大学",size:24.27717},{text:"首都师范大学",size:24.16071},{text:"上海交通大学",size:23.74146},{text:"广西大学",size:23.47454},
+      {text:"东南大学",size:22.81777},{text:"东北师范大学",size:22.65131},{text:"深圳大学",size:22.56683},{text:"云南大学",size:22.40241},
+      {text:"暨南大学",size:22.21407},{text:"南京理工大学",size:21.91337},{text:"吉林大学",size:21.85239},{text:"湖南大学",size:21.54555}];
+		 var wc=d3.layout.cloud()
+				  .size([w, h])
+				  .words(words)
+				  .padding(5)
+				  .rotate(function() { return ~~(Math.random() * 2) * 90; })
+				  .font("Impact")
+				  .fontSize(function(d) { return d.size; })
+				  .on("end", draw)
+				  .start();
+
+		  function draw(words) {
+         var svg=d3.select("body")
+            .append("svg")
+            .attr("width",w)
+            .attr("height",h);
+        //console.log(h)
+		  	 svg.append("text")
+            .attr("font-size","40px")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",h/17)
+            .text("2020中国考研院校人气四十强排行");
+         svg.append("text")
+            .attr("font-size","15px")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",h/10.5)
+            .text("数据来源:http://www.360doc.com/content/20/1230/21/756224_954435916.shtml");
+         svg.append("text")
+            .attr("font-size","14px")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",h/8)
+            .text("注意：这里的人气指数院校指的是在中国教育在线网站搜索点击次数等指标");
+
+			svg.attr("width", w)
+				.attr("height", h)
+			  .append("g")
+				.attr("transform", "translate(800,500)")
+			  .selectAll("text")
+				.data(words)
+			  .enter().append("text")
+				.style("font-size", function(d) { return d.size + "px"; })
+				.style("font-family", "Impact")
+				.style("fill", function(d, i) { return fill(i); })
+				.attr("text-anchor", "middle")
+				.attr("transform", function(d) {
+				  return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+				})
+				.text(function(d) { return d.text; });
+
+                svg.append("text")
+               .attr("font-size","20px")
+               .attr("fill","rgb(124,84,57)")
+               .attr("font-family","Fantasy")
+               .attr("text-anchor","middle")
+               .attr("x",w/2)
+               .attr("y",h-5)
+               .text("数科 曾锐 李钰林");
+		  }
+          
+          
+        </script>
+    </body>
+</html>
+```
+
+- 效果展示
+![cloud](image/cloud.png)
+
+[点击查看](http://47.93.252.206:8080/div2021/Cloud.html)
+
+---
 ### 参考资料
 [数据可视化慕课](https://www.icourse163.org/spoc/learn/CUC-1462488181?tid=1463302467#/learn/announce)
 [W3school](https://www.w3school.com.cn/index.html)
