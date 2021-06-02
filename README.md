@@ -1,4 +1,4 @@
-# 2021数据可视化学习
+# 基于D3的数据可视化学习
 > 近年来，可视化越来越流行，许多报刊杂志、门户网站、新闻媒体都大量使用可视化技术，使得复杂的数据和文字变得十分容易理解。而 D3 正是数据可视化工具中的佼佼者，基于 JavaScript 开发，项目托管于 GitHub。从 D3 诞生以来，不断受到好评，在 GitHub 上的项目仓库排 行榜也不断上升。本项目的目的在于提供一个简单易懂的入门教程，希望读者能够喜欢。
 
 [代码仓库](https://github.com/Soulmate7/DataVisualization)
@@ -111,18 +111,18 @@ x.innerHTML="浏览器的内部窗口宽度：" + w + "，高度：" + h + "。"
 ```
 
 - 效果展示
-![直方图](image/直方图.png)
+![直方图](https://github.com/Soulmate7/DataVisualization/raw/master/image/直方图.png)
 
 [点击查看](http://47.93.252.206:8080/div2021/Histogram.html)
 
 - 二叉树
 
-![二叉树](image/二叉树.png)
+![二叉树](https://github.com/Soulmate7/DataVisualization/raw/master/image/二叉树.png)
 [点击查看](http://47.93.252.206:8080/div2021/BinaryTree.html)
 
 - 文字二叉树
 
-![文字二叉树](image/文字树.png)
+![文字二叉树](https://github.com/Soulmate7/DataVisualization/raw/master/image/文字树.png)
 [点击查看](http://47.93.252.206:8080/div2021/WordTree.html)
 
 
@@ -353,7 +353,7 @@ D3绘制直方图code
 
 - 效果展示
 
-![直方图D3](image/直方图D3.png)
+![直方图D3](https://github.com/Soulmate7/DataVisualization/raw/master/image/直方图D3.png)
 [点击查看](http://47.93.252.206:8080/div2021/HistogramByD3.html)
 
 ---
@@ -456,7 +456,7 @@ svg.selectAll("text")
 
 - 效果展示
 
-![pie](image/pie.png)
+![pie](https://github.com/Soulmate7/DataVisualization/raw/master/image/pie.png)
 
 [点击查看](http://47.93.252.206:8080/div2021/pie.html)
 
@@ -515,7 +515,7 @@ connection.close();                          //断开链接
 
 - 效果展示
 
-![jsp](image/jsp.png)
+![jsp](https://github.com/Soulmate7/DataVisualization/raw/master/image/jsp.png)
 
 [点击查看](http://47.93.252.206:8080/div2021/indexHist.jsp)
 
@@ -692,7 +692,7 @@ connection.close();                          //断开链接
 ```
 - 效果展示
 
-![force](image/force.png)
+![force](https://github.com/Soulmate7/DataVisualization/raw/master/image/force.png)
 
 [点击查看](http://47.93.252.206:8080/div2021/forcePeople.html)
 
@@ -809,11 +809,13 @@ D3.JS词云图实现了JavaScript的Wordle算法。Wordle基于空间四叉树�
 ```
 
 - 效果展示
-![cloud](image/cloud.png)
+![cloud](https://github.com/Soulmate7/DataVisualization/raw/master/image/cloud.png)
 
 [点击查看](http://47.93.252.206:8080/div2021/Cloud.html)
 
 ---
+待更新...
+
 ### 参考资料
 [数据可视化慕课](https://www.icourse163.org/spoc/learn/CUC-1462488181?tid=1463302467#/learn/announce)
 [W3school](https://www.w3school.com.cn/index.html)

@@ -1,0 +1,253 @@
+<html>
+    <head>
+        <title>D3中国地图</title>
+        <meta charset="utf-8">
+        <style>
+            .province{
+                stroke: black;
+                stroke-width: 1px;
+            }
+            .southchinasea{
+                stroke: black;
+                stroke-width: 1px;
+                fill: #ADD8E6;
+            }
+            .axis path,
+          .axis line{
+              fill: none;
+              stroke: black;
+              shape-rendering: crispEdges;
+          }
+           
+          .axis text {
+              font-family: sans-serif;
+              font-size: 11px;
+          }
+        </style>
+    </head>
+    <body>
+        <h1 style="text-align:center">2021年全国各地硕士研究生招生考试报名人数可视化地图</h1>
+        <p style="text-align: center"> 
+            <text word-wrap="break-word">非2021年的部分数据已标注</text><br>
+            <a href="https://www.eol.cn/e_ky/zt/common/bmrs/">数据来源</a><br>
+            <text word-wrap="break-word">数科 曾锐 李钰林</text>
+        </p>
+        <body background="image/moroccan-flower.png"></body>
+        <script src="d3.v3.min.js" charset="utf-8"></script>
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            w=w*0.98;
+            h=h*0.9;
+            var svg=d3.select("body")
+                      .append("svg")
+                      .attr("width",w)
+                      .attr("height",h);
+
+            //甘肃，青海，广西，贵州，重庆，北京，福建，安徽，广东，西藏，新疆，海南，宁夏，陕西
+            //山西，湖北，湖南，四川，云南，河北，河南，辽宁，山东，天津，江西，江苏，上海，浙江，吉林，内蒙古，黑龙江，香港，澳门，台湾
+            var nums=[6.8,0.8,6.4,5.8,13.9,13.8,5.8,17.5,20.2,0.3,5.0,2.4,1.1,14.2,
+                      14,16.28,12.2,21.7,4.9,14.7,30.2,12.9,34.8,6.8,9.6,26.3,6,12.5,8.0,8.2,10.7,0,0,0];
+            var margin= { top: 30, right: 0, bottom: 30, left: 40 };
+            var year=['2017','2018','2019','2020','2021'];
+            var yearnum=[[0,44658,55345,62300,68341],[0,0,8829,0,0],[0,33000,43000,53800,64000],
+          [0,0,0,58589,0],[53489,50000,0,79248,0],[289000,323000,383000,425000,138000],
+          [0,0,58000,0,0],[0,0,0,165000,175000],[85307,108000,140000,174000,202000],
+          [0,0,3641,0,0],[26388,0,36022,42597,50678],[0,14138,0,0,24161],
+          [9279,11011,0,0,0],[79000,93661,0,0,142000],[0,0,0,0,140000],
+          [107136,120774,144086,162800,0],[79577,97000,0,122847,0],
+          [81871,119523,141786,174815,217000],[0,39074,49496],[103055,120580,147188,0,0],
+          [156600,186000,2336000,0,302000],[84460,98111,109567,119081,129425],[186664,213803,254486,313190,348000],
+          [0,0,57956,68458,0],[52125,62910,78531,96505,0],[144839,170873,212000,249000,263000],
+          [52000,60000,0,0,0],[0,70000,0,110000,125000],[50755,60182,0,80852,0],[39371,47859,59569,75366,82398],
+          [67189,79242,90466,99126,107689],[0,0,0,0,0,0],[0,0,0,0,0,0]];
+            
+            var projection=d3.geo.mercator()
+                                 .center([116,40])
+                                 .scale(800)
+                                 .translate([w/2.7,h/2.5]);
+
+            var color=d3.scale.linear()
+                        .domain([0,d3.max(nums)])
+                        .range(['#F0FFFF','#00BFFF']);
+            var txtcolor=d3.scale.linear()
+                           .domain([0,d3.max(nums)])
+                           .range(['#6495ED','#000080']);
+
+            var path=d3.geo.path()
+                           .projection(projection);
+
+            d3.json("map/China.geojson",function(error,geo){
+                console.log(geo);
+                
+                var province=svg.selectAll(".province")
+                                .data(geo.features)
+                                .enter()
+                                .append("path")
+                                .attr("class","province")
+                                .attr("fill",function(d,i){
+                                    return color(nums[i]);
+                                })
+                                .attr("d",path)
+                                .on("mouseover",function(d,i){
+                                    d3.select(this)
+                                      .attr("fill","#00CED1");
+                                    svg.append("text")
+                                       .attr("id","name")
+                                       .attr("x",w/3.7)
+                                       .attr("y",h/4)
+                                       .attr("fill","#87CEEB")
+                                       .attr("font-size",10)
+                                       .transition()
+                                       .duration(500)
+                                       .ease("linear")
+                                       .attr("font-size",25)
+                                       .attr("fill",function(){
+                                           return txtcolor(nums[i]);
+                                       })
+                                       .attr("text-anchor","middle")
+                                       .text(d.properties.name+":");
+                                    svg.append("text")
+                                       .attr("id","num")
+                                       .attr("x",w/3.15)
+                                       .attr("y",h/4)
+                                       .attr("fill","#87CEEB")
+                                       .attr("font-size",10)
+                                       .transition()
+                                       .duration(500)
+                                       .ease("linear")
+                                       .attr("font-size",25)
+                                       .attr("fill",function(){
+                                           return txtcolor(nums[i]);
+                                       })
+                                       .attr("font-size",25)
+                                       .attr("text-anchor","middle")
+                                       .text(nums[i]+" 万");
+
+                                    var linear=d3.scale.linear()
+                                                 .domain([0,d3.max(yearnum[i])])
+                                                 .range([0,500]);
+
+                                    var xScale = d3.scale.linear()
+                                                    .domain([2016,2022])
+                                                    .range([0,500]);
+                                    var xAxis=d3.svg.axis()
+                                                    .scale(xScale)
+                                                    .orient("bottom")
+                                                    .ticks(5)
+                                                    .tickSize(2,4)
+                                                    .tickValues([2017,2018,2019,2020,2021])
+                                                    .tickFormat(d3.format("1.0f"));
+                                    var yScale = d3.scale.linear()
+                                                   .domain([0,d3.max(yearnum[i])])
+                                                   .range([0,-500]); 
+                                    
+                                    var yAxis=d3.svg.axis()
+                                                    .scale(yScale)
+                                                    .orient("left");
+                                    
+                                    svg.append("g")
+                                        .attr('id','chart')
+                                        .attr("class","axis")
+                                        .attr("transform","translate("+w/1.5+","+h/1.3+")")
+                                        .call(yAxis);
+                                    svg.append("g")
+                                        .attr('id','chart3')
+                                        .attr("class","axis")
+                                        .attr("transform","translate("+w/1.5+","+h/1.3+")")
+                                        .call(xAxis);
+                                    // svg.append('line')
+                                    //    .attr('id',"chart2")
+                                    //    .attr("x1",w/1.5)
+                                    //    .attr("y1",h/1.3)
+                                    //    .attr("x2",w/1.5+550)
+                                    //    .attr("y2",h/1.3)
+                                    //    .attr("stroke", "black");
+
+                                    svg.selectAll("rect")
+                                       .data(yearnum[i])
+                                       .enter()
+                                       .append("rect")
+                                       .attr("x",function(d,i){
+                                           return w/1.5+i*80+70;
+                                       })
+                                       .attr("y",function(d){
+                                           return h/1.3-linear(d);
+                                       })
+                                       .attr("width",40)
+                                       .attr("height",function(d){
+                                            return linear(d);
+                                        })
+                                       .attr("fill","#ADD8E6");
+
+                                    // svg.selectAll("year")
+                                    //     .attr("id",'year')
+                                    //    .data(year)
+                                    //    .enter()
+                                    //    .append("text")
+                                    //    .attr("font-size","middle")
+                                    //    .attr("x",function(d,i){
+                                    //         return w/1.5+i*100+25;
+                                    //    })
+                                    //    .attr("y",function(d){
+                                    //        return h/1.3+15;
+                                    //    })
+                                    //    .text(function(d){return d});
+                                       
+
+                                })
+                                .on("mouseout",function(d,i){
+                                    d3.select(this)
+                                      .attr("fill",function(){
+                                        return color(nums[i]);
+                                      })
+                                    d3.select("#name")
+                                      .remove();
+                                    d3.select("#num")
+                                      .remove();
+                                    d3.select("#chart")
+                                      .remove();
+                                    d3.select("#chart2")
+                                      .remove();
+                                    d3.select("#chart3")
+                                      .remove();
+                                    d3.selectAll("rect")
+                                      .remove();
+                                    d3.selectAll("year")
+                                      .remove();
+                                });
+
+                var label=svg.selectAll(".label")
+                             .data(geo.features)
+                             .enter()
+                             .append("text")
+                             .attr("class","label")
+                             .text(function(d){
+                                 return d.properties.name;
+                             })
+                             .attr("transform",function(d,i){
+                                var center=path.centroid(d);
+                                var x=center[0],y=center[1];
+                                if((d.properties.name=="河北")||(d.properties.name=="澳门")||(d.properties.name=="安徽"))
+											y=y+25;
+                                return "translate("+x+","+y+")"; 
+                             })
+                             .attr('fill','#4682B4')
+							 .attr("font-size","12px");
+            });
+            
+            d3.xml("map/southchinasea.svg",function(error,xmlDocument){
+                console.log(xmlDocument);
+
+                svg.html(function(d){
+                    return d3.select(this).html()+ xmlDocument.getElementsByTagName("g")[0].outerHTML;
+                });
+
+                d3.select("#southchinasea")
+                  .attr("transform","translate(800,600) scale(0.5)")
+                  .attr("class","southchinasea");
+
+            });
+        </script>
+    </body>
+</html>
