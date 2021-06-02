@@ -150,7 +150,13 @@
                                         .attr('id','chart')
                                         .attr("class","axis")
                                         .attr("transform","translate("+w/1.5+","+h/1.3+")")
-                                        .call(yAxis);
+                                        .call(yAxis)
+                                        .append("text")
+                                        .text(d.properties.name+"省市历年考研报名人数")
+                                        //.attr("transform","rotate(-90)")//text旋转-90°
+                                        //.attr("text-anchor","end")//字体尾部对齐
+                                        .attr("dx","2em")
+                                        .attr("dy","-45em")//沿y轴平移一个字体的大小;
                                     svg.append("g")
                                         .attr('id','chart3')
                                         .attr("class","axis")
