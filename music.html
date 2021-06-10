@@ -1,14 +1,22 @@
 
-<html>  
-    <head>  
-        <meta charset="utf-8">  
-        <title>基于GeoJSON绘制中国GDP2016数据地图</title>  
-    </head> 
-	<body>
-		<audio id="audioElement" src="peace.mp3" controls="controls"></audio>
-		<script src="https://d3js.org/d3.v6.min.js" charset="utf-8"></script> 
-		<script>
-			
+<!doctype html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+    <title>基于D3的音乐可视化</title>
+  </head>
+  <body>
+	<h1 style="text-align:center">基于D3的音乐可视化</h1>
+	<p style="text-align: center"> 
+		<a href="工科hiCircle.htm">工科专业树</a><br>
+		<a href="理科hiCircle.htm">理科专业树</a><br>
+		<text word-wrap="break-word">数科 曾锐 李钰林</text>
+	</p>
+    <audio id="audioElement" src="peace.mp3" controls="controls"></audio>
+    <script src="d3.v3.min.js" charset="utf-8" ></script>
+    <script>
+		 var  width=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)*0.98;
+		 var  height=(window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight)*0.98;
 		  var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 		  var audioElement = document.getElementById('audioElement');
 		  var audioSrc = audioCtx.createMediaElementSource(audioElement);
@@ -19,9 +27,7 @@
 		  audioSrc.connect(audioCtx.destination);
 
 		  var frequencyData = new Uint8Array(100);
-		  var width = 1200;
-		  var height =500;
-		  var innerR = 80;//内半径
+		  var innerR = 120;//内半径
 		  
 		  var dataset=new Array(100);
 		  for(var i=0;i<dataset.length;i++){
@@ -47,13 +53,13 @@
 					  .append("path")
 					  .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
 					  .attr("fill",function(d,i){//填充颜色
-							return 'rgb(0,0,'+dataset[i][1]+')';
+							return 'rgb(128,230,'+dataset[i][1]+')';
 					    })
 					  .attr("stroke","#FFF")
 				      .attr("d",function(d,i){ 
 							arcPath.outerRadius(dataset[i][1]);
 							return arcPath(d);   //起止角度(内外半径)——>路径的参数
-					    });				
+					    });
 					
 			  // 连续循环更新
 		  function renderChart() {
@@ -63,7 +69,7 @@
 			 svg.selectAll('path')
 				 .data(pie(dataset))
 				 .attr("fill",function(d,i){//填充颜色
-					    return 'rgb(0,0,'+frequencyData[i]+')';
+					    return 'rgb(128,230,'+dataset[i][1]+')';
 				 })
 				 .attr("d",function(d,i){ 
 				        arcPath.outerRadius(frequencyData[i]+ innerR);
@@ -71,7 +77,7 @@
 				 });	
 		  }
 		 renderChart();
-	
-		</script>	
-    </body>  
-</html>  
+
+	</script>
+  </body>
+</html>
