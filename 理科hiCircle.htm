@@ -1,0 +1,99 @@
+<html>
+<head>
+    	<meta charset="utf-8">
+  <style>
+
+	.node circle {
+	  stroke: white;
+	  stroke-width: 1px;
+	}
+
+	.node {
+	  font: 12px sans-serif;
+	}
+
+	.link {
+	  fill: none;
+	  stroke: #ccc;
+	  stroke-width: 1px;
+	}
+
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center">理科专业树</h1>
+	<p style="text-align: center"> 
+		<a href="music.html">音乐可视化</a><br>
+		<a href="工科hiCircle.htm">工科专业树</a><br>
+		<text word-wrap="break-word">数科 曾锐 李钰林</text>
+	</p>
+<script src="http://d3js.org/d3.v5.js" charset="utf-8"></script>
+<script>
+		     var width=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)*0.96;
+		    var height=(window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight)*0.9;
+            var color = d3.schemeCategory10;
+            var svg = d3.select("body")			//ѡ��<body>
+					.append("svg")			//��<body>�����<svg>
+					.attr("width", width)	//�趨<svg>�Ŀ������
+					.attr("height", height);//�趨<svg>�ĸ߶�����
+
+            radius = width /3.6
+            var tree= d3.cluster().size([2*Math.PI, radius - 100]);
+            d3.json("理科专业目录.json").then(function(data) {
+                console.log(data);
+                //var root=tree(d3.hierarchy(data).sort((a, b) => d3.ascending(a.data.name, b.data.name)));
+                var root=tree(d3.hierarchy(data));   //�ڼ�����ϵ������˸�����λ����Ϣ��d.xΪ�Ƕȣ�d.yΪ�뾶��
+                console.log(root);
+                links=root.links();            //��Flare.jsonΪ��,��251����
+                console.log(links);
+                nodes=root.descendants()       //��Flare.jsonΪ��,��252���ڵ�
+                console.log(nodes);
+
+                svg.append("g")
+                      .attr("fill", "none")
+                      .attr("stroke", "#696969")
+                      .attr("stroke-width", 1)
+                    .selectAll("path")
+                    .data(links)
+                    .join("path")
+                    .attr("d", d3.linkRadial()
+                      .angle(d => d.x)
+                      .radius(d => d.y));
+
+                svg.append("g")
+                   .selectAll("circle")
+                   .data(nodes)
+                   .join("circle")
+                   .attr("transform", d => `
+                    rotate(${d.x * 180 / Math.PI - 90})
+                    translate(${d.y},0)
+                  `)
+                  .attr("fill",d=>color[d.depth])
+                  .attr("r", d=>(d.height*8+3));
+
+                  svg.append("g")
+				  	    .attr("font-family", "sans-serif")
+					    .attr("font-size", 8)
+					    .attr("stroke-width", 0)
+                     .selectAll("text")
+                     .data(root.descendants())
+                     .join("text")
+                     .attr("transform", d => `
+						rotate(${d.x * 180 / Math.PI - 90})
+						translate(${d.y},0)
+						rotate(${d.x >= Math.PI ? 180 : 0})
+					  `)
+                     .attr("dy", "0.31em")
+                     .attr("x", d => d.x < Math.PI === !d.children ? 6 : -6)
+                     .attr("text-anchor", d => d.x < Math.PI === !d.children ? "start" : "end")
+                     .text(d => d.data.name)
+                     .clone(true).lower()
+                     .attr("fill", '#2E8B57');
+
+                  svg.selectAll("g")
+                   .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
+
+            })
+</script>
+</body>
+</html>
