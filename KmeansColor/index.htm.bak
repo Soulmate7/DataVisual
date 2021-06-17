@@ -1,0 +1,70 @@
+<html>  
+  <head>  
+        <meta charset="utf-8">  
+        <title>D3动画-直方图</title>  
+  </head> 
+<body>
+<h1>基于K-Means聚类的图片色彩提取</h1>
+	<script src="ml.min.js" charset="utf-8"></script> 
+	<script src="d3.v5.min.js" charset="utf-8"></script> 
+	<script>  
+		
+		var width=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)*0.98;
+		var height=(window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight)*0.9;
+		//var color = d3.scale.category10();   //d3.v3.js
+		var color=d3.schemeCategory10;
+
+
+		
+		
+        d3.csv("data/Iris.csv").then(function(root) {
+
+			//console.log(root);
+			var svg = d3.select("body")			//选择<body>
+						.append("svg")			//在<body>中添加<svg>
+						.attr("width", width)	//设定<svg>的宽度属性
+						.attr("height", height);//设定<svg>的高度属性				
+	
+			var rect = svg.selectAll("rect")
+							.data(root)		//绑定数据
+							.enter()			//获取enter部分
+							.append("rect")	    //添加rect元素，使其与绑定数组的长度一致
+							.attr("x", function(d,i){		//设置矩形的x坐标
+								return  d.PetalLengthCm*100;
+							})
+							.attr("transform","translate("+width/4+","+height/2+")")
+							.attr("y", function(d){		//设置矩形的y坐标
+								return height-d.SepalLengthCm*100;
+							})
+							.attr("fill", function(d,i){		//设置矩形的y坐标
+								return color[Math.floor(i/50)];
+							})
+							.attr("width",5)		//设置矩形的宽度
+							.attr("height",5);	
+
+            var data =new Array(150);
+
+			for (var i=0;i<data.length;i++){
+				data[i]=new Array(); 
+				data[i][0]=parseFloat(root[i].SepalLengthCm);
+				data[i][1]=parseFloat(root[i].SepalWidthCm);
+				data[i][2]=parseFloat(root[i].PetalLengthCm);
+				data[i][3]=parseFloat(root[i].PetalWidthCm);
+				//console.log(data[i][0]);
+			}
+            console.log(typeof(data[0][0]),data[0],data[51],data[101]);
+			console.log(data.length);
+			var centers = [data[0],data[51],data[101]];
+
+			var ans = ML.KMeans(data,3, {initialization: centers });
+			console.log(ans);
+			console.log(ans.centroids);
+
+		});																			
+		
+	</script>
+</body>
+
+
+
+</html>

@@ -1,0 +1,110 @@
+<html>  
+  <head>  
+        <meta charset="utf-8">  
+        <title>iris散点图</title>  
+  </head> 
+<body>
+  <center>
+<h1>iris散点图</h1>
+  <script src="ml.min.js"></script>
+	<script src="d3.v5.min.js" charset="utf-8"></script>
+  <script>
+    
+        var width=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        var height=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        width=width*0.98;
+        height=height*0.9;
+        var svg = d3.select("body")			//选择<body>
+				 		.append("svg")			//在<body>中添加<svg>
+				 		.attr("width", width)	//设定<svg>的宽度属性
+				 		.attr("height", height);//设定<svg>的高度属性	
+        d3.csv("Iris.csv").then(function(root){
+          console.log(root);
+          
+          
+          var color=d3.schemeCategory10;
+          // var rect=svg.selectAll("rect")
+          //               .data(root)
+          //               .enter()
+          //               .append("rect")
+          //               .attr("x",function(d){
+          //                 return d.PetalLengthCm*100;
+          //               })
+          //               .attr("transform","translate("+width/4+","+height/2+")")
+          //               .attr("y",function(d){
+          //                 return height-d.SepalLengthCm*100;
+          //               })
+          //               .attr("fill",function(d,i){
+          //                 return color[Math.floor(i/50)];
+          //                 //return "#ADD8E6"
+          //               })
+          //               .attr("width",5)
+          //               .attr("height",5);
+                      
+          var data=new Array()
+          for(var i=0;i<root.length;i++)
+          {
+            data[i]=new Array();
+            
+            {
+              data[i][0]=parseFloat(root[i].SepalLengthCm);
+              data[i][1]=parseFloat(root[i].SepalWidthCm);
+              data[i][2]=parseFloat(root[i].PetalLengthCm);
+              data[i][3]=parseFloat(root[i].PetalWidthCm);
+              //console.log(data[i][0]);
+            }
+          }
+          console.log(typeof(data[0][0]),data[0],data[51],data[101]);
+          console.log(data.length);
+          
+          var centers=[data[0],data[51],data[101]];
+          var ans=ML.KMeans(data,3,{initialization:centers});
+          console.log(ans);
+          console.log(ans.centroids[0].centroid);
+          data.push(ans.centroids[0].centroid);
+          data.push(ans.centroids[1].centroid);
+          data.push(ans.centroids[2].centroid);
+          draw();
+
+          function draw(){
+            
+            var rect=svg.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("x",function(d,i){
+                          return d[0]*100;
+                        })
+                        .attr("transform","translate("+width/8+",0)")
+                        .attr("y",function(d){
+                          return height-d[2]*100;
+                        })
+                        .attr("fill",function(d,i){
+                          if(i>=150){
+                            return "#FF0000";
+                          }
+                          return color[Math.floor(i/50)];
+                        })
+                        .attr("width",function(d,i){
+                          if(i>=150)
+                          {
+                            return 8;
+                          }
+                          return 5;
+                        })
+                        .attr("height",function(d,i){
+                          if(i>=150)
+                          {
+                            return 8;
+                          }
+                          return 5;
+                        });
+        }
+          
+        })
+
+        
+    </script>
+    </center>
+</body>
+</html>
