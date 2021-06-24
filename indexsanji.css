@@ -1,0 +1,15 @@
+.box{
+    margin:15%;
+    width: 1200px;
+    height: 1200px;
+    background-color: #ddd;
+}
+
+.title{
+    font-size: 50px;
+    margin:{top: 130, left:200, bottom: 50, right: 50};
+}
+
+.text{
+    font-size: 10px;
+}

@@ -1,0 +1,143 @@
+<html>
+    <head>
+        <title>ZR's histogram by d3</title>
+        <meta charset="utf-8">
+        <style>
+          .axis path,
+          .axis line{
+              fill: none;
+              stroke: black;
+              shape-rendering: crispEdges;
+          }
+           
+          .axis text {
+              font-family: sans-serif;
+              font-size: 11px;
+          }
+          </style>
+    </head>
+    <body>
+        <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <!--script src="d3.v3.min.js" charset="utf-8"></script-->
+        <script>
+            var w=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            w=w*0.6;
+            h=h*0.6;
+            var svg=d3.select("body")
+            .append("svg")
+            .attr("width",w)
+            .attr("height",h);
+
+            svg.append("text")
+            .attr("font-size","24px")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",30)
+            .text("2020年各院校计算机与科学技术专业(学硕)报录比");
+            svg.append("text")
+            .attr("font-size","15px")
+            .attr("font-family","Fantasy")
+            .attr("text-anchor","middle")
+            .attr("x",w/2)
+            .attr("y",55)
+            .text("数据来源:各院校研究生招生网");
+
+
+            svg.append("rec")
+            .attr()
+            var colleges=["浙大","国防科大","北邮","北航","上交","南大","华东师范","同济","西安电子科大","东南"];
+            var dataset=[1615,215,764,376,255,447,210,287,761,333];
+            var dataset2=[33,15,279,69,25,97,34,6,142,66];
+            var college=svg.selectAll(".college")
+            .data(colleges)
+            .enter()
+            .append("text")
+            .attr("font-size","12px")
+            .attr("x",function(d,i){
+              return i*(w/colleges.length)+60;
+            })
+            .attr("y",h-5)
+            .text(function(d){
+              return d;
+            });
+
+            var linear=d3.scale.linear()
+            .domain([0,d3.max(dataset)])
+            .range([0,h-50]);
+
+            svg.selectAll(".rect")
+            .data(dataset)
+            .enter()
+            .append("rect")
+            .attr("x",function(d,i){
+              return i*(w/dataset.length)+40;
+            })
+            .attr("y",function(d){
+              return h-linear(d)-25;
+            })
+            .attr("width",5)
+            .attr("height",5)
+            .attr("fill","steelblue");
+            
+            svg.selectAll(".textvalue")
+            .data(dataset)
+            .enter()
+            .append("text")
+            .attr("fill","steelblue")
+            .attr("font-size","14px")
+            .attr("text-anchor","middle")
+            .attr("x",function(d,i){
+              return i*(w/dataset.length)+30;
+            })
+            .attr("y",function(d){
+              return h-linear(d)-40;
+            })
+            .attr("dx",((w/dataset.length)-35)/2)
+            .attr("dy","1em")
+            .text(function(d){
+              return d;
+            });
+            svg.selectAll(".textvalue2")
+            .data(dataset2)
+            .enter()
+            .append("text")
+            .attr("fill","white")
+            .attr("font-size","14px")
+            .attr("text-anchor","middle")
+            .attr("x",function(d,i){
+              return i*(w/dataset2.length)+30;
+            })
+            .attr("y",function(d){
+              return h-linear(d)-40;
+            })
+            .attr("dx",((w/dataset2.length)-35)/2)
+            .attr("dy","1em")
+            .text(function(d){
+              return d;
+            });
+            
+
+            var yScale = d3.scale.linear()
+            .domain([0,d3.max(dataset)])
+            .range([0,-h+50]);          
+            var yAxis=d3.svg.axis()
+            .scale(yScale)
+            .orient("left");
+
+            svg.append("line")
+            .attr("x1",35)
+            .attr("y1",h-25)
+            .attr("x2",w)
+            .attr("y2",h-25)
+            .attr("stroke", "black");
+            svg.append("g")
+            .attr("class","axis")
+            .attr("transform","translate("+35+","+(h-25)+")")
+            .call(yAxis);
+            
+            
+        </script>
+    </body>
+</html>
